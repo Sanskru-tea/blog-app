@@ -26,10 +26,14 @@ export default function Home() {
         setTotalPages(res.data.totalPages);
         setLoading(false);
       })
-      .catch(() => {
-        setError('Failed to load posts. Is the backend server running?');
-        setLoading(false);
-      });
+      .catch((err) => {
+  console.log("FULL ERROR:", err);
+  console.log("Response:", err.response);
+  console.log("Data:", err.response?.data);
+
+  setError(err.response?.data?.error || err.message);
+  setLoading(false);
+});
   }, [page, category]);
 
   return (
