@@ -8,7 +8,28 @@ const postRoutes = require('./routes/posts');
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
+
+
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://blog-app-two-kappa-21.vercel.app',
+  'https://blog-76o679oqs-sanskruti4.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+
+
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
